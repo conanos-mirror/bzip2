@@ -1,6 +1,8 @@
 import platform
 from conan.packager import ConanMultiPackager
+import os
 
+os.environ['CONAN_USERNAME'] = os.environ.get('CONAN_USERNAME','conanos')
 
 if __name__ == "__main__":
     builder = ConanMultiPackager()
