@@ -11,8 +11,8 @@ class Bzip2Conan(ConanFile):
     branch = "master"
     generators = "cmake"
     settings = "os", "compiler", "arch", "build_type"
-    options = {"shared": [True, False], "fPIC": [True, False]}
-    default_options = "shared=False", "fPIC=True"
+    options = {"shared": [True, False]}
+    default_options = "shared=False"
     exports = ["CMakeLists.txt"]
     url = "https://github.com/lasote/conan-bzip2"
     license = "BSD-style license"
@@ -21,43 +21,47 @@ class Bzip2Conan(ConanFile):
                   " available techniques (the PPM family of statistical compressors), whilst " \
                   "being around twice as fast at compression and six times faster at decompression."
 
+    source_subfolder = "source_subfolder"
+
     @property
     def zip_folder_name(self):
-        return "bzip2-%s" % self.version
+        return "bzip2-master"
 
     def config(self):
         del self.settings.compiler.libcxx
 
     def source(self):
-        zip_name = "bzip2-%s.tar.gz" % self.version
-        # url = "http://www.bzip.org/%s/%s" % (self.version, zip_name)
-        url = "https://bintray.com/conan/Sources/download_file?file_path=%s" % zip_name
-        tools.download(url, zip_name)
-        tools.check_md5(zip_name, "00b516f4704d4a7cb50a1d97e6e8e15b")
-        tools.unzip(zip_name)
-        os.unlink(zip_name)
+        RC = 'rc2'
+        url = "https://github.com/Mingyiz/bzip2/archive/%s-%s.tar.gz"%(self.version,RC)
+        tools.get(url)
+        os.rename("bzip2-%s-%s"%(self.version,RC) ,self.source_subfolder)
 
     def build(self):
-        shutil.move("CMakeLists.txt", "%s/CMakeLists.txt" % self.zip_folder_name)
-        with tools.chdir(self.zip_folder_name):
-            if self.settings.os == "Windows" and tools.os_info.is_linux:
-                tools.replace_in_file("bzip2.c", "sys\\stat.h", "sys/stat.h")
+        with tools.chdir(self.source_subfolder):
             os.mkdir("_build")
             with tools.chdir("_build"):
                 cmake = CMake(self)
-                if self.options.fPIC:
-                    cmake.definitions["FPIC"] = "ON"
                 cmake.configure(build_dir=".", source_dir="..")
                 cmake.build(build_dir=".")
+                cmake.test()
+                cmake.install()
 
     def package(self):
-        self.copy("bzlib.h", "include", "%s" % self.zip_folder_name, keep_path=False)
-        self.copy("*bzip2", dst="bin", src=self.zip_folder_name, keep_path=False)
-        self.copy(pattern="*.so*", dst="lib", src=self.zip_folder_name, keep_path=False)
-        self.copy(pattern="*.dylib", dst="lib", src=self.zip_folder_name, keep_path=False)
-        self.copy(pattern="*.a", dst="lib", src="%s/_build" % self.zip_folder_name, keep_path=False)
-        self.copy(pattern="*.lib", dst="lib", src="%s/_build" % self.zip_folder_name, keep_path=False)
-        self.copy(pattern="*.dll", dst="bin", src="%s/_build" % self.zip_folder_name, keep_path=False)
+        # remove binaries
+        for bin_program in ['bzip2', 'bzip2recover']:
+            for ext in ['', '.exe','.js']:
+                try:
+                    os.remove(os.path.join(self.package_folder, 'bin', bin_program+ext))
+                except:
+                    pass
+
+        #self.copy("bzlib.h", "include", "%s" % self.zip_folder_name, keep_path=False)
+        #self.copy("*bzip2", dst="bin", src=self.zip_folder_name, keep_path=False)
+        #self.copy(pattern="*.so*", dst="lib", src=self.zip_folder_name, keep_path=False)
+        #self.copy(pattern="*.dylib", dst="lib", src=self.zip_folder_name, keep_path=False)
+        #self.copy(pattern="*.a", dst="lib", src="%s/_build" % self.zip_folder_name, keep_path=False)
+        #self.copy(pattern="*.lib", dst="lib", src="%s/_build" % self.zip_folder_name, keep_path=False)
+        #self.copy(pattern="*.dll", dst="bin", src="%s/_build" % self.zip_folder_name, keep_path=False)
 
     def package_info(self):
         self.cpp_info.libs = ['bz2']
