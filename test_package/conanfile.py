@@ -25,4 +25,4 @@ class DefaultNameConan(ConanFile):
         if self.settings.os == "Windows" and tools.os_info.is_linux:
             self.output.warn("Skipping run cross built package")
         else:
-            self.run(".%sbin%sbzip2 --help" % (os.sep, os.sep))
+            self.run(".%sbin%stest_package" % (os.sep, os.sep))
