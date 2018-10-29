@@ -32,11 +32,9 @@ class Bzip2Conan(ConanFile):
         del self.settings.compiler.libcxx
 
     def source(self):
-        RC = 'rc2'
+        RC = 'rc3'
         url = "https://github.com/Mingyiz/bzip2/archive/%s-%s.tar.gz"%(self.version,RC)
-        #tools.get(url)
-        #tools.run('git clone https://github.com/Mingyiz/bzip2.git -b %s'%self.source_subfolder)
-        tools.unzip('d:/github.com/bzip2-1.0.6-rc2.zip')
+        tools.get(url)
         os.rename("bzip2-%s-%s"%(self.version,RC) ,self.source_subfolder)
 
         os.rename(os.path.join(self.source_subfolder, "CMakeLists.txt"),
