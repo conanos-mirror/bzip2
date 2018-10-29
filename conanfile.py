@@ -13,7 +13,8 @@ class Bzip2Conan(ConanFile):
     settings = "os", "compiler", "arch", "build_type"
     options = {"shared": [True, False]}
     default_options = "shared=False"
-    exports = ["CMakeLists.txt"]
+    exports = ["LICENSE"]
+    exports_sources = ["CMakeLists.txt"]
     url = "https://github.com/lasote/conan-bzip2"
     license = "BSD-style license"
     description = "bzip2 is a freely available, patent free (see below), high-quality data " \
@@ -33,18 +34,22 @@ class Bzip2Conan(ConanFile):
     def source(self):
         RC = 'rc2'
         url = "https://github.com/Mingyiz/bzip2/archive/%s-%s.tar.gz"%(self.version,RC)
-        tools.get(url)
+        #tools.get(url)
+        #tools.run('git clone https://github.com/Mingyiz/bzip2.git -b %s'%self.source_subfolder)
+        tools.unzip('d:/github.com/bzip2-1.0.6-rc2.zip')
         os.rename("bzip2-%s-%s"%(self.version,RC) ,self.source_subfolder)
 
+        os.rename(os.path.join(self.source_subfolder, "CMakeLists.txt"),
+                  os.path.join(self.source_subfolder, "CMakeListsOriginal.txt"))
+        shutil.copy("CMakeLists.txt",
+                    os.path.join(self.source_subfolder, "CMakeLists.txt"))
+
     def build(self):
-        with tools.chdir(self.source_subfolder):
-            os.mkdir("_build")
-            with tools.chdir("_build"):
-                cmake = CMake(self)
-                cmake.configure(build_dir=".", source_dir="..")
-                cmake.build(build_dir=".")
-                cmake.test()
-                cmake.install()
+        cmake = CMake(self)
+        cmake.configure(source_folder=self.source_subfolder)
+        cmake.build()
+        cmake.test()
+        cmake.install()
 
     def package(self):
         # remove binaries
