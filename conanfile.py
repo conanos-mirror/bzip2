@@ -12,7 +12,7 @@ class Bzip2Conan(ConanFile):
     generators = "cmake"
     settings = "os", "compiler", "arch", "build_type"
     options = {"shared": [True, False]}
-    default_options = "shared=False"
+    default_options = "shared=True"
     exports = ["LICENSE"]
     exports_sources = ["CMakeLists.txt"]
     url = "https://github.com/lasote/conan-bzip2"
@@ -32,8 +32,8 @@ class Bzip2Conan(ConanFile):
         del self.settings.compiler.libcxx
 
     def source(self):
-        RC = 'rc3'
-        url = "https://github.com/Mingyiz/bzip2/archive/%s-%s.tar.gz"%(self.version,RC)
+        RC = 'rc3-1'
+        url = "https://github.com/cppbitman/bzip2/archive/%s-%s.tar.gz"%(self.version,RC)
         tools.get(url)
         os.rename("bzip2-%s-%s"%(self.version,RC) ,self.source_subfolder)
 
