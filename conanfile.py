@@ -83,5 +83,8 @@ class Bzip2Conan(ConanFile):
         tools.save('%s/lib/pkgconfig/%s.pc'%(self.package_folder, self.name),
         pc_content.format(prefix=self.package_folder, name=self.name, version=self.version, description=self.description))
 
+        tools.save('%s/lib/pkgconfig/bz2.pc'%(self.package_folder),
+        pc_content.format(prefix=self.package_folder, name=self.name, version=self.version, description=self.description))
+
     def package_info(self):
         self.cpp_info.libs = ['bz2']
