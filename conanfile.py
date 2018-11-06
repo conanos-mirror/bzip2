@@ -66,5 +66,22 @@ class Bzip2Conan(ConanFile):
         #self.copy(pattern="*.lib", dst="lib", src="%s/_build" % self.zip_folder_name, keep_path=False)
         #self.copy(pattern="*.dll", dst="bin", src="%s/_build" % self.zip_folder_name, keep_path=False)
 
+        pc_content ='''
+        prefix={prefix}
+        exec_prefix=${{prefix}}
+        libdir=${{prefix}}/lib
+        toolexeclibdir=${{prefix}}/lib
+        includedir=${{prefix}}/include
+        
+        Name: {name}
+        Description: {description}
+        Version: {version}
+        Libs: -L${{toolexeclibdir}} -lbz2
+        Cflags: -I${{includedir}}
+        '''
+        
+        tools.save('%s/lib/pkgconfig/%s.pc'%(self.package_folder, self.name),
+        pc_content.format(prefix=self.package_folder, name=self.name, version=self.version, description=self.description))
+
     def package_info(self):
         self.cpp_info.libs = ['bz2']
