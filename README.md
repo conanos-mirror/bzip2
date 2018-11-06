@@ -4,7 +4,6 @@ Conan package for BZip2 library. http://www.bzip.org/
 
 The packages generated with this **conanfile** can be found in [Bintray](https://bintray.com/conan-community/conan/bzip2%3Aconan).
 
-
 ## Basic setup
 
     $ conan install bzip2/1.0.6@conan/stable
