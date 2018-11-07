@@ -1,3 +1,6 @@
+| Windows | Linux |
+|:------:|:------:|
+| [![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/conanos/bz2?svg=true)](https://ci.appveyor.com/project/Mingyiz/bz2) |[![Linux Build Status](https://api.travis-ci.org/conanos/bz2.svg)](https://travis-ci.org/conanos/bz2)|
 # conan-bzip2
 
 Conan package for BZip2 library. http://www.bzip.org/
@@ -20,3 +23,10 @@ If you handle multiple dependencies in your project is better to add a *conanfil
 
     [generators]
     cmake
+
+Complete the installation of requirements for your project running:</small></span>
+
+    conan install . 
+
+Project setup installs the library (and all his dependencies) and generates the files *conanbuildinfo.cmake* with all the 
+paths and variables that you need to link with your dependencies.
