@@ -1,6 +1,6 @@
 | Windows | Linux |
 |:------:|:------:|
-| [![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/conanos/bz2?svg=true)](https://ci.appveyor.com/project/Mingyiz/bz2) |[![Linux Build Status](https://api.travis-ci.org/conanos/bz2.svg)](https://travis-ci.org/conanos/bz2)|
+| [![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/conanos/bzip2-qo8a3?svg=true)](https://ci.appveyor.com/project/Mingyiz/bzip2-qo8a3) |[![Linux Build Status](https://api.travis-ci.org/conanos/bzip2.svg)](https://travis-ci.org/conanos/bzip2)|
 # conan-bzip2
 
 Conan package for BZip2 library. http://www.bzip.org/
