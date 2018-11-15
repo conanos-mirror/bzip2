@@ -4,7 +4,6 @@ branches:
   - /stable\/*/
 env:
    global:
-     - CONAN_REFERENCE: "bzip2/1.0.6"
      - CONAN_USERNAME: "conanos"
      - CONAN_LOGIN_USERNAME: "mingyiz"
      - CONAN_CHANNEL: "stable"
