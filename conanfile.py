@@ -3,6 +3,7 @@ import shutil
 
 from conans import CMake, tools
 from conans import ConanFile
+from conanos.build import config_scheme
 
 
 class Bzip2Conan(ConanFile):
@@ -28,8 +29,9 @@ class Bzip2Conan(ConanFile):
     def zip_folder_name(self):
         return "bzip2-master"
 
-    def config(self):
+    def configure(self):
         del self.settings.compiler.libcxx
+        config_scheme(self)
 
     def source(self):
         RC = 'rc4'
